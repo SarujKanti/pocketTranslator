@@ -31,7 +31,6 @@ class WordDetailAdapter(
 
     override fun getItemCount(): Int = items.size
 
-    // ✅ THIS METHOD FIXES YOUR ERROR
     fun updateList(newItems: List<WordDetailItem>) {
         items.clear()
         items.addAll(newItems)
