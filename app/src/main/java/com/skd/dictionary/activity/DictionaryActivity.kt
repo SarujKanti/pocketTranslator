@@ -8,6 +8,7 @@ import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageButton
+import android.widget.ProgressBar
 import android.widget.Spinner
 import android.widget.TextView
 import android.widget.Toast
@@ -26,6 +27,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.skd.dictionary.adapter.WordDetailAdapter
+import android.view.inputmethod.InputMethodManager
 
 class DictionaryActivity : AppCompatActivity() {
     private lateinit var translatorHelper: TranslatorHelper
@@ -36,10 +38,12 @@ class DictionaryActivity : AppCompatActivity() {
     private lateinit var tts: TextToSpeech
     private lateinit var btnSpeak: ImageButton
     private lateinit var btnClear: ImageButton
-
+    private lateinit var progressWordDetails: ProgressBar
     private lateinit var dictionaryViewModel: DictionaryViewModel
     private lateinit var rvWordDetails: RecyclerView
     private lateinit var wordDetailAdapter: WordDetailAdapter
+    private lateinit var btnSpeakInput: ImageButton
+    private lateinit var btnClearInput: ImageButton
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -67,6 +71,8 @@ class DictionaryActivity : AppCompatActivity() {
 
         dictionaryViewModel.wordDetails.observe(this) { responseList ->
 
+            progressWordDetails.visibility = View.GONE
+            rvWordDetails.visibility = View.VISIBLE
             val items = mutableListOf<WordDetailItem>()
 
             responseList.forEach { response ->
@@ -135,8 +141,10 @@ class DictionaryActivity : AppCompatActivity() {
         spinnerLanguage = findViewById(R.id.spinnerLanguage)
         btnSpeak = findViewById(R.id.btnSpeak)
         btnClear = findViewById(R.id.btnClear)
-
+        progressWordDetails = findViewById(R.id.progressWordDetails)
         rvWordDetails = findViewById(R.id.rvWordDetails)
+        btnSpeakInput = findViewById(R.id.btnSpeakInput)
+        btnClearInput = findViewById(R.id.btnClearInput)
         rvWordDetails.layoutManager = LinearLayoutManager(this)
 
         wordDetailAdapter = WordDetailAdapter(mutableListOf())
@@ -146,6 +154,56 @@ class DictionaryActivity : AppCompatActivity() {
         btnClear.setOnClickListener {
             tvResult.text = ""
         }
+
+        btnClearInput.setOnClickListener {
+            // Clear input text
+            etInput.text.clear()
+
+            // Clear result text
+            tvResult.text = ""
+
+            // Clear RecyclerView data
+            wordDetailAdapter.updateList(emptyList())
+
+            // Optional: hide RecyclerView
+            rvWordDetails.visibility = View.GONE
+        }
+
+
+        btnSpeakInput.setOnClickListener {
+
+            val textToSpeak = etInput.text.toString().trim()
+
+            if (textToSpeak.isEmpty()) {
+                Toast.makeText(this, "Nothing to speak", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            val selectedLanguage =
+                spinnerLanguage.selectedItem as? String ?: return@setOnClickListener
+
+            val locale = getLocaleForLanguage(selectedLanguage)
+
+            val result = tts.setLanguage(locale)
+
+            if (result == TextToSpeech.LANG_MISSING_DATA ||
+                result == TextToSpeech.LANG_NOT_SUPPORTED
+            ) {
+                Toast.makeText(
+                    this,
+                    "Voice not supported for $selectedLanguage",
+                    Toast.LENGTH_SHORT
+                ).show()
+            } else {
+                tts.speak(
+                    textToSpeak,
+                    TextToSpeech.QUEUE_FLUSH,
+                    null,
+                    "INPUT_SPEAK"
+                )
+            }
+        }
+
 
         btnSpeak.setOnClickListener {
 
@@ -235,6 +293,7 @@ class DictionaryActivity : AppCompatActivity() {
 
     private fun setupTranslateAction() {
         btnTranslate.setOnClickListener {
+            hideKeyboard()
 
             val text = etInput.text.toString().trim()
 
@@ -242,8 +301,9 @@ class DictionaryActivity : AppCompatActivity() {
                 tvResult.text = "Please enter text"
                 return@setOnClickListener
             }
+            progressWordDetails.visibility = View.VISIBLE
+            rvWordDetails.visibility = View.INVISIBLE
 
-            // 🔹 ALWAYS fetch dictionary data
             dictionaryViewModel.getWordDetails(text)
 
             val selectedLanguage = spinnerLanguage.selectedItem as? String ?: return@setOnClickListener
@@ -266,6 +326,11 @@ class DictionaryActivity : AppCompatActivity() {
                 }
             )
         }
+    }
+
+    private fun hideKeyboard() {
+        val imm = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(etInput.windowToken, 0)
     }
 
     private fun getLocaleForLanguage(language: String): Locale {
