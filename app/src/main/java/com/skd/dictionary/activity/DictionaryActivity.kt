@@ -68,7 +68,6 @@ class DictionaryActivity : AppCompatActivity() {
     }
 
     private fun observeDictionaryData() {
-
         dictionaryViewModel.wordDetails.observe(this) { responseList ->
 
             progressWordDetails.visibility = View.GONE
