@@ -9,7 +9,6 @@ class DictionaryRepository {
         return try {
             val response =
                 RetrofitClient.api.getWordDetails(word)
-
             if (response.isSuccessful && response.body() != null) {
                 Result.success(response.body()!!)
             } else {
