@@ -77,7 +77,6 @@ class DictionaryActivity : AppCompatActivity() {
                 response.meanings?.forEach { meaning ->
                     meaning.definitions?.forEach { def ->
 
-                        // Definition
                         def.definition?.let {
                             items.add(
                                 WordDetailItem(
