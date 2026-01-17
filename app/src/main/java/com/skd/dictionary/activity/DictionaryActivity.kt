@@ -111,7 +111,6 @@ class DictionaryActivity : AppCompatActivity() {
         }
     }
 
-    
     private fun preloadLanguages() {
         listOf(
             TranslateLanguage.HINDI,
