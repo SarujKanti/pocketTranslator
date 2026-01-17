@@ -22,7 +22,6 @@ class TranslatorHelper {
                 .build()
             Translation.getClient(options)
         }
-
         val conditions = DownloadConditions.Builder().build()
 
         onDownloading()
