@@ -69,7 +69,6 @@ class DictionaryActivity : AppCompatActivity() {
 
     private fun observeDictionaryData() {
         dictionaryViewModel.wordDetails.observe(this) { responseList ->
-
             progressWordDetails.visibility = View.GONE
             rvWordDetails.visibility = View.VISIBLE
             val items = mutableListOf<WordDetailItem>()
