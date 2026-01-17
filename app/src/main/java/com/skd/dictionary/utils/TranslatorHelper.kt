@@ -14,7 +14,6 @@ class TranslatorHelper {
         onSuccess: (String) -> Unit,
         onError: (Exception) -> Unit
     ) {
-
         val translator = translators.getOrPut(targetLanguage) {
             val options = TranslatorOptions.Builder()
                 .setSourceLanguage(TranslateLanguage.ENGLISH)
