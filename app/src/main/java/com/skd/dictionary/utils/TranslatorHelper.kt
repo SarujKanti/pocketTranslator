@@ -25,7 +25,7 @@ class TranslatorHelper {
 
         val conditions = DownloadConditions.Builder().build()
 
-        onDownloading() // 👈 ALWAYS show download/prepare state
+        onDownloading()
 
         translator.downloadModelIfNeeded(conditions)
             .addOnSuccessListener {
