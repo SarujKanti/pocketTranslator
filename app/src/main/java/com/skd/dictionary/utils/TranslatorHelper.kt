@@ -23,7 +23,6 @@ class TranslatorHelper {
             Translation.getClient(options)
         }
         val conditions = DownloadConditions.Builder().build()
-
         onDownloading()
         translator.downloadModelIfNeeded(conditions)
             .addOnSuccessListener {
