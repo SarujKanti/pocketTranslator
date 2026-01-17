@@ -128,8 +128,7 @@ class DictionaryActivity : AppCompatActivity() {
             )
         }
     }
-
-
+    
     private fun initViews() {
         etInput = findViewById(R.id.etInput)
         tvResult = findViewById(R.id.tvResult)
