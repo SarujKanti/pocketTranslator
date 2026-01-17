@@ -86,7 +86,6 @@ class DictionaryActivity : AppCompatActivity() {
                             )
                         }
 
-                        // Example
                         def.example?.let {
                             items.add(
                                 WordDetailItem("Example", it)
