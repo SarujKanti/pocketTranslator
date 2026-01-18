@@ -267,18 +267,15 @@ class DictionaryActivity : AppCompatActivity() {
                     val selectedLanguage =
                         parent.getItemAtPosition(position) as String
 
-                    val targetLangCode =
-                        LanguageConstants.indianLanguages[selectedLanguage]
-                            ?: return
-
+//                    val targetLangCode = LanguageConstants.indianLanguages[selectedLanguage] ?: return
                     // Pre-download model when language is selected
-                    translatorHelper.translate(
-                        text = "Hello",
-                        targetLanguage = targetLangCode,
-                        onDownloading = {},
-                        onSuccess = {},
-                        onError = {}
-                    )
+//                    translatorHelper.translate(
+//                        text = "Hello",
+//                        targetLanguage = targetLangCode,
+//                        onDownloading = {},
+//                        onSuccess = {},
+//                        onError = {}
+//                    )
                 }
 
                 override fun onNothingSelected(parent: AdapterView<*>) {}
@@ -347,6 +344,8 @@ class DictionaryActivity : AppCompatActivity() {
             tts.stop()
             tts.shutdown()
         }
+        translatorHelper.closeAll()
     }
+
 
 }
