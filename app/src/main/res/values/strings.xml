@@ -12,5 +12,5 @@
     <string name="translate">Translate</string>
     <string name="enter_english_text">Enter English text</string>
     <string name="translate_to">Translate To</string>
-    <string name="translated_text_">Translated text will appear here</string>
+    <string name="translated_text_">Translation appears here</string>
 </resources>
