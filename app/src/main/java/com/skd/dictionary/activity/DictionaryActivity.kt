@@ -3,6 +3,7 @@ package com.skd.dictionary.activity
 import android.os.Bundle
 import android.speech.tts.TextToSpeech
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Button
@@ -16,19 +17,18 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.google.mlkit.nl.translate.TranslateLanguage
 import com.skd.dictionary.R
+import com.skd.dictionary.adapter.WordDetailAdapter
+import com.skd.dictionary.constant.StringConstant
 import com.skd.dictionary.dataModel.WordDetailItem
 import com.skd.dictionary.utils.LanguageConstants
 import com.skd.dictionary.utils.TranslatorHelper
 import com.skd.dictionary.viewModel.DictionaryViewModel
 import java.util.Locale
-import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.skd.dictionary.adapter.WordDetailAdapter
-import android.view.inputmethod.InputMethodManager
-import com.skd.dictionary.constant.StringConstant
 
 class DictionaryActivity : AppCompatActivity() {
     private lateinit var translatorHelper: TranslatorHelper
