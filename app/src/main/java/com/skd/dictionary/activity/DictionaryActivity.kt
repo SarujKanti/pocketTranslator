@@ -28,6 +28,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.skd.dictionary.adapter.WordDetailAdapter
 import android.view.inputmethod.InputMethodManager
+import com.skd.dictionary.constant.StringConstant
 
 class DictionaryActivity : AppCompatActivity() {
     private lateinit var translatorHelper: TranslatorHelper
@@ -106,8 +107,11 @@ class DictionaryActivity : AppCompatActivity() {
         }
 
         dictionaryViewModel.error.observe(this) { errorMsg ->
-            // Show error elsewhere (Toast or Snackbar)
-            Toast.makeText(this, errorMsg, Toast.LENGTH_SHORT).show()
+            progressWordDetails.visibility = View.GONE
+
+            rvWordDetails.visibility = View.GONE
+
+            Toast.makeText(this, errorMsg ?: getString(R.string.details_not_found), Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -168,7 +172,7 @@ class DictionaryActivity : AppCompatActivity() {
             val textToSpeak = etInput.text.toString().trim()
 
             if (textToSpeak.isEmpty()) {
-                Toast.makeText(this, "Nothing to speak", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, getString(R.string.nothing_to_speak), Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
@@ -203,7 +207,7 @@ class DictionaryActivity : AppCompatActivity() {
             val textToSpeak = tvResult.text.toString().trim()
 
             if (textToSpeak.isEmpty()) {
-                tvResult.text = "Nothing to pronounce"
+                tvResult.text = getString(R.string.nothing_to_pronounce)
                 return@setOnClickListener
             }
 
@@ -271,9 +275,7 @@ class DictionaryActivity : AppCompatActivity() {
                     translatorHelper.translate(
                         text = "Hello",
                         targetLanguage = targetLangCode,
-                        onDownloading = {
-                            tvResult.text = "Preparing $selectedLanguage…"
-                        },
+                        onDownloading = {},
                         onSuccess = {},
                         onError = {}
                     )
@@ -283,39 +285,38 @@ class DictionaryActivity : AppCompatActivity() {
             }
     }
 
-
     private fun setupTranslateAction() {
         btnTranslate.setOnClickListener {
             hideKeyboard()
 
-            val text = etInput.text.toString().trim()
-
-            if (text.isEmpty()) {
-                tvResult.text = "Please enter text"
+            val word = etInput.text.toString().trim()
+            if (word.isEmpty()) {
+                tvResult.text = getString(R.string.please_enter_word)
                 return@setOnClickListener
             }
+
+            // Dictionary call (English meaning)
             progressWordDetails.visibility = View.VISIBLE
             rvWordDetails.visibility = View.INVISIBLE
+            dictionaryViewModel.getWordDetails(word)
 
-            dictionaryViewModel.getWordDetails(text)
-
-            val selectedLanguage = spinnerLanguage.selectedItem as? String ?: return@setOnClickListener
-            val targetLangCode =
-                LanguageConstants.indianLanguages[selectedLanguage] ?: return@setOnClickListener
-
-            tvResult.text = "Preparing translation…"
+            // Translate entered word
+            val selectedLanguage = spinnerLanguage.selectedItem as String
+            val targetLanguage =
+                LanguageConstants.indianLanguages[selectedLanguage]
+                    ?: return@setOnClickListener
 
             translatorHelper.translate(
-                text = text,
-                targetLanguage = targetLangCode,
+                text = word,
+                targetLanguage = targetLanguage,
                 onDownloading = {
-                    tvResult.text = "Searching…"
+                    tvResult.text = getString(R.string.translating)
                 },
-                onSuccess = { translated ->
-                    tvResult.text = translated
+                onSuccess = { translatedText ->
+                    tvResult.text = translatedText
                 },
                 onError = {
-                    tvResult.text = "Translation failed"
+                    tvResult.text = getString(R.string.failed_translating)
                 }
             )
         }
@@ -328,14 +329,14 @@ class DictionaryActivity : AppCompatActivity() {
 
     private fun getLocaleForLanguage(language: String): Locale {
         return when (language) {
-            "Hindi" -> Locale("hi", "IN")
-            "Tamil" -> Locale("ta", "IN")
-            "Telugu" -> Locale("te", "IN")
-            "Kannada" -> Locale("kn", "IN")
-            "Bengali" -> Locale("bn", "IN")
-            "Marathi" -> Locale("mr", "IN")
-            "Gujarati" -> Locale("gu", "IN")
-            "Urdu" -> Locale("ur", "IN")
+            StringConstant.HINDI -> Locale(StringConstant.SHORT_HINDI, StringConstant.INDIA)
+            StringConstant.TAMIL -> Locale(StringConstant.SHORT_TAMIL, StringConstant.INDIA)
+            StringConstant.TELUGU -> Locale(StringConstant.SHORT_TELUGU, StringConstant.INDIA)
+            StringConstant.KANNADA -> Locale(StringConstant.SHORT_KANNADA, StringConstant.INDIA)
+            StringConstant.BENGALI -> Locale(StringConstant.SHORT_BENGALI, StringConstant.INDIA)
+            StringConstant.MARATHI -> Locale(StringConstant.SHORT_MARATHI, StringConstant.INDIA)
+            StringConstant.GUJARATI -> Locale(StringConstant.SHORT_GUJARATI, StringConstant.INDIA)
+            StringConstant.URDU -> Locale(StringConstant.SHORT_URDU, StringConstant.INDIA)
             else -> Locale.US
         }
     }
