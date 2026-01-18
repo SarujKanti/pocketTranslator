@@ -8,4 +8,9 @@
     <string name="nothing_to_pronounce">Nothing to pronounce</string>
     <string name="nothing_to_speak">Nothing to speak</string>
     <string name="details_not_found">Details not found</string>
+
+    <string name="translate">Translate</string>
+    <string name="enter_english_text">Enter English text</string>
+    <string name="translate_to">Translate To</string>
+    <string name="translated_text_">Translated text will appear here</string>
 </resources>
