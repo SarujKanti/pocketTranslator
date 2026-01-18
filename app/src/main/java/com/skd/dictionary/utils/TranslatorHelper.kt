@@ -1,7 +1,9 @@
 package com.skd.dictionary.utils
 
-import com.google.mlkit.common.model.DownloadConditions
-import com.google.mlkit.nl.translate.*
+import com.google.mlkit.nl.translate.TranslateLanguage
+import com.google.mlkit.nl.translate.Translation
+import com.google.mlkit.nl.translate.Translator
+import com.google.mlkit.nl.translate.TranslatorOptions
 
 class TranslatorHelper {
 
@@ -21,9 +23,10 @@ class TranslatorHelper {
                 .build()
             Translation.getClient(options)
         }
-        val conditions = DownloadConditions.Builder().build()
+
         onDownloading()
-        translator.downloadModelIfNeeded(conditions)
+
+        translator.downloadModelIfNeeded()
             .addOnSuccessListener {
                 translator.translate(text)
                     .addOnSuccessListener(onSuccess)
@@ -31,4 +34,10 @@ class TranslatorHelper {
             }
             .addOnFailureListener(onError)
     }
+
+    fun closeAll() {
+        translators.values.forEach { it.close() }
+        translators.clear()
+    }
 }
+
