@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">Pocket Translator</string>
+
+
+    <string name="please_enter_word">Please enter a word</string>
+    <string name="translating">Translating…</string>
+    <string name="failed_translating">Translation failed</string>
+    <string name="nothing_to_pronounce">Nothing to pronounce</string>
+    <string name="nothing_to_speak">Nothing to speak</string>
+    <string name="details_not_found">Details not found</string>
 </resources>
