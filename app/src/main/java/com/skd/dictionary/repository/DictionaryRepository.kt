@@ -12,7 +12,7 @@ class DictionaryRepository {
             if (response.isSuccessful && response.body() != null) {
                 Result.success(response.body()!!)
             } else {
-                Result.failure(Exception("Word not found"))
+                Result.failure(Exception("Details not found"))
             }
         } catch (e: Exception) {
             Result.failure(e)
