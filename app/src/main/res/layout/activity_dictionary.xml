@@ -23,6 +23,15 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"/>
 
+    <ImageView
+        android:id="@+id/ivInfoLogo"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_margin="16dp"
+        android:src="@drawable/dictionary"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
     <!-- Input Card -->
     <androidx.cardview.widget.CardView
         android:id="@+id/cardInput"
