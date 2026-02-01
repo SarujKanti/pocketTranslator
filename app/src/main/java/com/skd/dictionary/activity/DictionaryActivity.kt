@@ -9,6 +9,7 @@ import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageButton
+import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.Spinner
 import android.widget.TextView
@@ -143,6 +144,7 @@ class DictionaryActivity : AppCompatActivity() {
         btnSpeakInput = findViewById(R.id.btnSpeakInput)
         btnClearInput = findViewById(R.id.btnClearInput)
         rvWordDetails.layoutManager = LinearLayoutManager(this)
+        val ivInfoLogo: ImageView = findViewById(R.id.ivInfoLogo)
 
         wordDetailAdapter = WordDetailAdapter(mutableListOf())
         rvWordDetails.adapter = wordDetailAdapter
@@ -150,6 +152,10 @@ class DictionaryActivity : AppCompatActivity() {
         initTextToSpeech()
         btnClear.setOnClickListener {
             tvResult.text = ""
+        }
+
+        ivInfoLogo.setOnClickListener {
+            showAppInfoDialog()
         }
 
         btnClearInput.setOnClickListener {
@@ -232,6 +238,27 @@ class DictionaryActivity : AppCompatActivity() {
         }
 
 
+    }
+
+    private fun showAppInfoDialog() {
+        val dialog = android.app.Dialog(this)
+        dialog.setContentView(R.layout.dialog_app_info)
+        dialog.setCancelable(true)
+
+        dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
+
+        dialog.show()
+
+        // Apply horizontal margin
+        val window = dialog.window ?: return
+        val params = window.attributes
+
+        val marginInDp = 20
+        val density = resources.displayMetrics.density
+        val marginInPx = (marginInDp * density).toInt()
+
+        params.width = resources.displayMetrics.widthPixels - (marginInPx * 2)
+        window.attributes = params
     }
 
     private fun initTextToSpeech() {
