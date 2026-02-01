@@ -13,7 +13,8 @@
     <string name="enter_english_text">Enter English text</string>
     <string name="translate_to">Translate To</string>
     <string name="translated_text_">Translation appears here</string>
-    <string name="dev_details">Name: Saruj Kanti Das\nRole: Android Developer\nEmail: sarujdas31@gmail.com</string>
+    <string name="developer_details_title">Developer Details</string>
+    <string name="dev_details">Name:\t\tSaruj Kanti Das\nRole:\t\tAndroid Developer\nEmail:\t\tsarujdas31@gmail.com</string>
     <string name="project_description">This app is designed to translate English words into native Indian languages such as
         Hindi, Tamil, Telugu, Kannada, Bengali, Marathi, Gujarati, and Urdu.\n\nIn addition to translation, the app helps
         users understand words better by providing detailed meanings, usage examples, and pronunciation support.\n\nThe goal of
