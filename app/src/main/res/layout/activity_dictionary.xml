@@ -172,7 +172,7 @@
             <TextView
                 android:id="@+id/tvResult"
                 android:layout_width="0dp"
-                android:layout_height="35dp"
+                android:layout_height="wrap_content"
                 android:fontFamily="@font/robo_600"
                 android:hint="@string/translated_text_"
                 android:textColor="#000"
