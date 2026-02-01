@@ -249,7 +249,6 @@ class DictionaryActivity : AppCompatActivity() {
 
         dialog.show()
 
-        // Apply horizontal margin
         val window = dialog.window ?: return
         val params = window.attributes
 
