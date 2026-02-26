@@ -61,8 +61,7 @@ class DictionaryActivity : AppCompatActivity() {
         preloadLanguages()
 
         val englishOnlyFilter = InputFilter { source, start, end, dest, dstart, dend ->
-
-            val allowedPattern = Regex("^[a-zA-Z ]*$")   // allows space also
+            val allowedPattern = Regex("^[a-zA-Z ]*$")
 
             for (i in start until end) {
                 val char = source[i].toString()
