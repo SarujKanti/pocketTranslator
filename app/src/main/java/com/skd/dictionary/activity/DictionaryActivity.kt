@@ -2,6 +2,7 @@ package com.skd.dictionary.activity
 
 import android.os.Bundle
 import android.speech.tts.TextToSpeech
+import android.text.InputFilter
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.AdapterView
@@ -58,6 +59,21 @@ class DictionaryActivity : AppCompatActivity() {
         setupLanguageSpinner()
         setupTranslateAction()
         preloadLanguages()
+
+        val englishOnlyFilter = InputFilter { source, start, end, dest, dstart, dend ->
+
+            val allowedPattern = Regex("^[a-zA-Z ]*$")   // allows space also
+
+            for (i in start until end) {
+                val char = source[i].toString()
+                if (!char.matches(allowedPattern)) {
+                    return@InputFilter ""
+                }
+            }
+            null
+        }
+
+        etInput.filters = arrayOf(englishOnlyFilter)
     }
 
     private fun toolbar(){
