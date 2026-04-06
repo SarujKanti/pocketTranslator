@@ -2,7 +2,9 @@ package com.skd.dictionary.activity
 
 import android.os.Bundle
 import android.speech.tts.TextToSpeech
+import android.text.Editable
 import android.text.InputFilter
+import android.text.TextWatcher
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.AdapterView
@@ -74,6 +76,23 @@ class DictionaryActivity : AppCompatActivity() {
         }
 
         etInput.filters = arrayOf(englishOnlyFilter)
+
+        // Second-layer guard: strips any non-English characters that bypass the
+        // InputFilter (e.g. clipboard paste on some Android versions).
+        etInput.addTextChangedListener(object : TextWatcher {
+            private var isCleaning = false
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+            override fun afterTextChanged(s: Editable?) {
+                if (isCleaning || s == null) return
+                val cleaned = s.toString().replace(Regex("[^a-zA-Z ]"), "")
+                if (cleaned != s.toString()) {
+                    isCleaning = true
+                    s.replace(0, s.length, cleaned)
+                    isCleaning = false
+                }
+            }
+        })
     }
 
     private fun toolbar(){
