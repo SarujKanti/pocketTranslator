@@ -22,7 +22,6 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.mlkit.nl.translate.TranslateLanguage
 import com.skd.dictionary.R
 import com.skd.dictionary.adapter.WordDetailAdapter
 import com.skd.dictionary.constant.StringConstant
@@ -134,18 +133,10 @@ class DictionaryActivity : AppCompatActivity() {
     }
 
     private fun preloadLanguages() {
-        listOf(
-            TranslateLanguage.HINDI,
-            TranslateLanguage.TAMIL,
-            TranslateLanguage.TELUGU
-        ).forEach { lang ->
-            translatorHelper.translate(
-                text = "Hello",
-                targetLanguage = lang,
-                onDownloading = {},
-                onSuccess = {},
-                onError = {}
-            )
+        // Download all 8 language models in the background at startup so
+        // every language translates instantly when the user picks it.
+        LanguageConstants.indianLanguages.values.forEach { langCode ->
+            translatorHelper.downloadModel(langCode)
         }
     }
 
