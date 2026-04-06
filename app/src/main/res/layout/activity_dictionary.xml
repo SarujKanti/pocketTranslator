@@ -9,51 +9,59 @@
     android:background="@color/bg_page"
     tools:context=".activity.DictionaryActivity">
 
-    <!-- ── Fixed gradient header ── -->
-    <View
+    <!--
+        viewHeader is a ConstraintLayout with the gradient background.
+        Its height is expanded programmatically by the status-bar inset,
+        and paddingTop is set to that inset so tvTitle / cardInfoLogo are
+        always positioned below the status bar on every Android version.
+    -->
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/viewHeader"
         android:layout_width="0dp"
         android:layout_height="80dp"
         android:background="@drawable/bg_gradient_header"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
-
-    <TextView
-        android:id="@+id/tvTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="18dp"
-        android:text="@string/app_name"
-        android:fontFamily="@font/robo_600"
-        android:textSize="22sp"
-        android:textStyle="bold"
-        android:textColor="#FFFFFF"
-        app:layout_constraintTop_toTopOf="@id/viewHeader"
-        app:layout_constraintBottom_toBottomOf="@id/viewHeader"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <androidx.cardview.widget.CardView
-        android:id="@+id/cardInfoLogo"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_marginEnd="16dp"
-        app:cardCornerRadius="20dp"
-        app:cardElevation="4dp"
-        app:cardBackgroundColor="#FFFFFF"
-        app:layout_constraintTop_toTopOf="@id/viewHeader"
-        app:layout_constraintBottom_toBottomOf="@id/viewHeader"
         app:layout_constraintEnd_toEndOf="parent">
 
-        <ImageView
-            android:id="@+id/ivInfoLogo"
-            android:layout_width="28dp"
-            android:layout_height="28dp"
-            android:layout_gravity="center"
-            android:src="@drawable/dictionary"
-            android:contentDescription="App info" />
+        <TextView
+            android:id="@+id/tvTitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="18dp"
+            android:text="@string/app_name"
+            android:fontFamily="@font/robo_600"
+            android:textSize="22sp"
+            android:textStyle="bold"
+            android:textColor="#FFFFFF"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/cardInfoLogo" />
 
-    </androidx.cardview.widget.CardView>
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardInfoLogo"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginEnd="16dp"
+            app:cardCornerRadius="20dp"
+            app:cardElevation="4dp"
+            app:cardBackgroundColor="#FFFFFF"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
+
+            <ImageView
+                android:id="@+id/ivInfoLogo"
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:layout_gravity="center"
+                android:src="@drawable/dictionary"
+                android:contentDescription="App info" />
+
+        </androidx.cardview.widget.CardView>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <!-- ── Scrollable content below header ── -->
     <androidx.core.widget.NestedScrollView
@@ -209,7 +217,7 @@
                 android:elevation="8dp"
                 app:backgroundTint="@null" />
 
-            <!-- ── Thin progress bar shown while translation is in flight ── -->
+            <!-- Thin progress bar shown while translation is in flight -->
             <ProgressBar
                 android:id="@+id/progressTranslation"
                 style="?android:attr/progressBarStyleHorizontal"
