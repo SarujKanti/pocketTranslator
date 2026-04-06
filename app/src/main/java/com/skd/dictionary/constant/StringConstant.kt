@@ -11,7 +11,7 @@ object StringConstant {
     const val KANNADA = "Kannada"
     const val SHORT_KANNADA = "kn"
     const val BENGALI = "Bengali"
-    const val SHORT_BENGALI = "kn"
+    const val SHORT_BENGALI = "bn"
     const val MARATHI = "Marathi"
     const val SHORT_MARATHI = "mr"
     const val GUJARATI = "Gujarati"
