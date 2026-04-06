@@ -81,7 +81,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="12dp"
                 app:cardCornerRadius="14dp"
-                app:cardElevation="6dp"
+                app:cardElevation="0dp"
                 app:cardBackgroundColor="@color/white">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
@@ -159,7 +159,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
                 app:cardCornerRadius="14dp"
-                app:cardElevation="6dp"
+                app:cardElevation="0dp"
                 app:cardBackgroundColor="@color/white">
 
                 <LinearLayout
@@ -226,8 +226,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="14dp"
                 app:cardCornerRadius="14dp"
-                app:cardElevation="6dp"
-                app:cardBackgroundColor="@color/bg_result_card">
+                app:cardElevation="0dp"
+                app:cardBackgroundColor="@color/white">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
