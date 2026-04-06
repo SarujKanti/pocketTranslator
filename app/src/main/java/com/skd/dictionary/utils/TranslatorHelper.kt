@@ -35,6 +35,23 @@ class TranslatorHelper {
             .addOnFailureListener(onError)
     }
 
+    fun downloadModel(
+        targetLanguage: String,
+        onComplete: () -> Unit = {},
+        onError: (Exception) -> Unit = {}
+    ) {
+        val translator = translators.getOrPut(targetLanguage) {
+            val options = TranslatorOptions.Builder()
+                .setSourceLanguage(TranslateLanguage.ENGLISH)
+                .setTargetLanguage(targetLanguage)
+                .build()
+            Translation.getClient(options)
+        }
+        translator.downloadModelIfNeeded()
+            .addOnSuccessListener { onComplete() }
+            .addOnFailureListener { onError(it) }
+    }
+
     fun closeAll() {
         translators.values.forEach { it.close() }
         translators.clear()
