@@ -2,11 +2,13 @@ package com.skd.dictionary.activity
 
 import android.annotation.SuppressLint
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.WindowCompat
 import com.skd.dictionary.R
 
 @SuppressLint("CustomSplashScreen")
@@ -14,6 +16,10 @@ class SplashActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        // Match status bar to gradient start colour; make icons white
+        window.statusBarColor = Color.parseColor("#4361EE")
+        WindowCompat.getInsetsController(window, window.decorView)
+            .isAppearanceLightStatusBars = false
         setContentView(R.layout.activity_splash)
 
         // Splash duration
