@@ -48,6 +48,7 @@ class DictionaryActivity : AppCompatActivity() {
     private lateinit var wordDetailAdapter: WordDetailAdapter
     private lateinit var btnSpeakInput: ImageButton
     private lateinit var btnClearInput: ImageButton
+    private lateinit var tvPronunciation: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -159,6 +160,7 @@ class DictionaryActivity : AppCompatActivity() {
         rvWordDetails = findViewById(R.id.rvWordDetails)
         btnSpeakInput = findViewById(R.id.btnSpeakInput)
         btnClearInput = findViewById(R.id.btnClearInput)
+        tvPronunciation = findViewById(R.id.tvPronunciation)
         rvWordDetails.layoutManager = LinearLayoutManager(this)
         val ivInfoLogo: ImageView = findViewById(R.id.ivInfoLogo)
 
@@ -168,6 +170,8 @@ class DictionaryActivity : AppCompatActivity() {
         initTextToSpeech()
         btnClear.setOnClickListener {
             tvResult.text = ""
+            tvPronunciation.text = ""
+            tvPronunciation.visibility = View.GONE
         }
 
         ivInfoLogo.setOnClickListener {
@@ -175,16 +179,11 @@ class DictionaryActivity : AppCompatActivity() {
         }
 
         btnClearInput.setOnClickListener {
-            // Clear input text
             etInput.text.clear()
-
-            // Clear result text
             tvResult.text = ""
-
-            // Clear RecyclerView data
+            tvPronunciation.text = ""
+            tvPronunciation.visibility = View.GONE
             wordDetailAdapter.updateList(emptyList())
-
-            // Optional: hide RecyclerView
             rvWordDetails.visibility = View.GONE
         }
 
@@ -335,6 +334,13 @@ class DictionaryActivity : AppCompatActivity() {
                 },
                 onSuccess = { translatedText ->
                     tvResult.text = translatedText
+                    val pronunciation = romanize(translatedText)
+                    if (pronunciation.isNotBlank() && pronunciation != translatedText) {
+                        tvPronunciation.text = pronunciation
+                        tvPronunciation.visibility = View.VISIBLE
+                    } else {
+                        tvPronunciation.visibility = View.GONE
+                    }
                 },
                 onError = {
                     tvResult.text = getString(R.string.failed_translating)
@@ -359,6 +365,17 @@ class DictionaryActivity : AppCompatActivity() {
             StringConstant.GUJARATI -> Locale(StringConstant.SHORT_GUJARATI, StringConstant.INDIA)
             StringConstant.URDU -> Locale(StringConstant.SHORT_URDU, StringConstant.INDIA)
             else -> Locale.US
+        }
+    }
+
+    private fun romanize(text: String): String {
+        return try {
+            // Any-Latin converts any Unicode script → Latin; NFD+Mark removal strips diacritics
+            val transliterator = android.icu.text.Transliterator
+                .getInstance("Any-Latin; NFD; [:Nonspacing Mark:] Remove; NFC")
+            transliterator.transliterate(text)
+        } catch (e: Exception) {
+            ""
         }
     }
 
