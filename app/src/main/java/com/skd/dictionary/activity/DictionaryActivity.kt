@@ -8,7 +8,6 @@ import android.text.TextWatcher
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.AdapterView
-import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageButton
@@ -26,6 +25,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.skd.dictionary.R
+import com.skd.dictionary.adapter.LanguageSpinnerAdapter
 import com.skd.dictionary.adapter.WordDetailAdapter
 import com.skd.dictionary.constant.StringConstant
 import com.skd.dictionary.dataModel.WordDetailItem
@@ -256,7 +256,8 @@ class DictionaryActivity : AppCompatActivity() {
             }
 
             val selectedLanguage =
-                spinnerLanguage.selectedItem as? String ?: return@setOnClickListener
+                (spinnerLanguage.selectedItem as? LanguageSpinnerAdapter.LanguageItem)?.name
+                    ?: return@setOnClickListener
 
             val locale = getLocaleForLanguage(selectedLanguage)
             val result = tts.setLanguage(locale)
@@ -302,29 +303,23 @@ class DictionaryActivity : AppCompatActivity() {
 
 
     private fun setupLanguageSpinner() {
+        val languageItems = listOf(
+            LanguageSpinnerAdapter.LanguageItem("Hindi",    "🇮🇳", "हिंदी"),
+            LanguageSpinnerAdapter.LanguageItem("Tamil",    "🇮🇳", "தமிழ்"),
+            LanguageSpinnerAdapter.LanguageItem("Telugu",   "🇮🇳", "తెలుగు"),
+            LanguageSpinnerAdapter.LanguageItem("Kannada",  "🇮🇳", "ಕನ್ನಡ"),
+            LanguageSpinnerAdapter.LanguageItem("Bengali",  "🇮🇳", "বাংলা"),
+            LanguageSpinnerAdapter.LanguageItem("Marathi",  "🇮🇳", "मराठी"),
+            LanguageSpinnerAdapter.LanguageItem("Gujarati", "🇮🇳", "ગુજરાતી"),
+            LanguageSpinnerAdapter.LanguageItem("Urdu",     "🇮🇳", "اردو")
+        )
 
-        val languageNames = LanguageConstants.indianLanguages.keys.toList()
+        spinnerLanguage.adapter = LanguageSpinnerAdapter(this, languageItems)
 
-        spinnerLanguage.adapter = ArrayAdapter(
-            this,
-            android.R.layout.simple_spinner_item,
-            languageNames
-        ).apply {
-            setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        spinnerLanguage.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {}
+            override fun onNothingSelected(parent: AdapterView<*>) {}
         }
-
-        spinnerLanguage.onItemSelectedListener =
-            object : AdapterView.OnItemSelectedListener {
-
-                override fun onItemSelected(
-                    parent: AdapterView<*>,
-                    view: View?,
-                    position: Int,
-                    id: Long
-                ) {}
-
-                override fun onNothingSelected(parent: AdapterView<*>) {}
-            }
     }
 
     private fun setupTranslateAction() {
@@ -346,7 +341,8 @@ class DictionaryActivity : AppCompatActivity() {
             progressTranslation.visibility = View.VISIBLE
             btnTranslate.isEnabled = false
 
-            val selectedLanguage = spinnerLanguage.selectedItem as String
+            val selectedLanguage =
+                (spinnerLanguage.selectedItem as? LanguageSpinnerAdapter.LanguageItem)?.name ?: ""
             val targetLanguage =
                 LanguageConstants.indianLanguages[selectedLanguage]
                     ?: run {
