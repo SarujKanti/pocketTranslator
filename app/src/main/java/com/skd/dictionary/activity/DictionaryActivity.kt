@@ -1,6 +1,5 @@
 package com.skd.dictionary.activity
 
-import android.graphics.Color
 import android.os.Bundle
 import android.speech.tts.TextToSpeech
 import android.text.Editable
@@ -100,13 +99,30 @@ class DictionaryActivity : AppCompatActivity() {
 
     private fun toolbar() {
         setContentView(R.layout.activity_dictionary)
-        // Match status bar to gradient header colour; make icons white
-        window.statusBarColor = Color.parseColor("#4361EE")
-        WindowCompat.getInsetsController(window, window.decorView)
-            .isAppearanceLightStatusBars = false
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
+
+        // White icons on the dark gradient — works API 23+ via WindowInsetsControllerCompat
+        WindowCompat.getInsetsController(window, window.decorView).apply {
+            isAppearanceLightStatusBars = false   // white clock/battery/signal icons
+            isAppearanceLightNavigationBars = true // dark nav-bar icons on the light bg_page
+        }
+
+        // Expand viewHeader to cover the status bar so the gradient flows
+        // seamlessly behind the clock/battery row on every Android version.
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.viewHeader)) { view, insets ->
+            val statusBarHeight = insets.getInsets(WindowInsetsCompat.Type.statusBars()).top
+            // Push tvTitle / cardInfoLogo below the status bar
+            view.setPadding(0, statusBarHeight, 0, 0)
+            // Expand the header height to include the status bar area
+            val visualHeight = (80 * resources.displayMetrics.density).toInt()
+            view.layoutParams.height = statusBarHeight + visualHeight
+            view.requestLayout()
+            insets
+        }
+
+        // Prevent scroll content from being hidden behind the navigation bar
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.scrollContent)) { view, insets ->
+            val navBar = insets.getInsets(WindowInsetsCompat.Type.navigationBars())
+            view.setPadding(0, 0, 0, navBar.bottom)
             insets
         }
     }

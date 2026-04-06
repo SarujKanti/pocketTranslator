@@ -2,13 +2,15 @@ package com.skd.dictionary.activity
 
 import android.annotation.SuppressLint
 import android.content.Intent
-import android.graphics.Color
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.view.View
+import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.ViewCompat
 import androidx.core.view.WindowCompat
+import androidx.core.view.WindowInsetsCompat
 import com.skd.dictionary.R
 
 @SuppressLint("CustomSplashScreen")
@@ -16,17 +18,32 @@ class SplashActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        // Match status bar to gradient start colour; make icons white
-        window.statusBarColor = Color.parseColor("#4361EE")
-        WindowCompat.getInsetsController(window, window.decorView)
-            .isAppearanceLightStatusBars = false
+        // Edge-to-edge: gradient background fills the entire screen including
+        // behind the status bar and navigation bar on all Android versions.
+        enableEdgeToEdge()
+
+        // White clock / battery / signal icons — gradient is dark so icons must be white.
+        // Works on API 23+ via WindowInsetsControllerCompat.
+        WindowCompat.getInsetsController(window, window.decorView).apply {
+            isAppearanceLightStatusBars = false
+            isAppearanceLightNavigationBars = false
+        }
+
         setContentView(R.layout.activity_splash)
+
+        // Prevent the footer from being hidden behind the navigation bar on
+        // devices with a gesture bar or on-screen buttons.
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.splashRoot)) { view, insets ->
+            val navBar = insets.getInsets(WindowInsetsCompat.Type.navigationBars())
+            view.setPadding(0, 0, 0, navBar.bottom)
+            insets
+        }
 
         // Splash duration
         Handler(Looper.getMainLooper()).postDelayed({
             startActivity(Intent(this, DictionaryActivity::class.java))
             finish()
-        }, 2000) // 2 seconds
+        }, 2000)
     }
 
     override fun onResume() {
@@ -44,5 +61,4 @@ class SplashActivity : AppCompatActivity() {
                 .start()
         }
     }
-
 }
