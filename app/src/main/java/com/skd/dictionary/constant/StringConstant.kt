@@ -18,6 +18,4 @@ object StringConstant {
     const val SHORT_GUJARATI = "gu"
     const val URDU = "Urdu"
     const val SHORT_URDU = "ur"
-    const val MALAYALAM = "Malayalam"
-    const val SHORT_MALAYALAM = "ml"
 }

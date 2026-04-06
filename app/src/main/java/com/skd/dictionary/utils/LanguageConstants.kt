@@ -12,7 +12,6 @@ object LanguageConstants {
         "Bengali" to TranslateLanguage.BENGALI,
         "Marathi" to TranslateLanguage.MARATHI,
         "Gujarati" to TranslateLanguage.GUJARATI,
-        "Urdu" to TranslateLanguage.URDU,
-        "Malayalam" to TranslateLanguage.MALAYALAM
+        "Urdu" to TranslateLanguage.URDU
     )
 }

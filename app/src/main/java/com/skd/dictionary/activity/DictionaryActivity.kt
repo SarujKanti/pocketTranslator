@@ -310,9 +310,8 @@ class DictionaryActivity : AppCompatActivity() {
             LanguageSpinnerAdapter.LanguageItem("Kannada",  "🇮🇳", "ಕನ್ನಡ"),
             LanguageSpinnerAdapter.LanguageItem("Bengali",  "🇮🇳", "বাংলা"),
             LanguageSpinnerAdapter.LanguageItem("Marathi",  "🇮🇳", "मराठी"),
-            LanguageSpinnerAdapter.LanguageItem("Gujarati",  "🇮🇳", "ગુજરાતી"),
-            LanguageSpinnerAdapter.LanguageItem("Urdu",      "🇮🇳", "اردو"),
-            LanguageSpinnerAdapter.LanguageItem("Malayalam", "🇮🇳", "മലയാളം")
+            LanguageSpinnerAdapter.LanguageItem("Gujarati", "🇮🇳", "ગુજરાતી"),
+            LanguageSpinnerAdapter.LanguageItem("Urdu",     "🇮🇳", "اردو")
         )
 
         spinnerLanguage.adapter = LanguageSpinnerAdapter(this, languageItems)
@@ -392,7 +391,6 @@ class DictionaryActivity : AppCompatActivity() {
             StringConstant.MARATHI -> Locale(StringConstant.SHORT_MARATHI, StringConstant.INDIA)
             StringConstant.GUJARATI -> Locale(StringConstant.SHORT_GUJARATI, StringConstant.INDIA)
             StringConstant.URDU -> Locale(StringConstant.SHORT_URDU, StringConstant.INDIA)
-            StringConstant.MALAYALAM -> Locale(StringConstant.SHORT_MALAYALAM, StringConstant.INDIA)
             else -> Locale.US
         }
     }
