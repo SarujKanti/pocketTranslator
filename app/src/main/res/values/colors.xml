@@ -2,6 +2,15 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-
     <color name="transparent">#00FFFFFF</color>
+
+    <!-- App palette -->
+    <color name="primary">#4F6EDB</color>
+    <color name="primary_dark">#3754CF</color>
+    <color name="accent_purple">#8B5CF6</color>
+    <color name="bg_page">#F0F4FF</color>
+    <color name="bg_result_card">#EDF0FF</color>
+    <color name="text_primary">#1A1F36</color>
+    <color name="text_secondary">#6B7280</color>
+    <color name="card_border">#DDE3F5</color>
 </resources>
