@@ -1,5 +1,6 @@
 package com.skd.dictionary.activity
 
+import android.graphics.Color
 import android.os.Bundle
 import android.speech.tts.TextToSpeech
 import android.text.Editable
@@ -20,6 +21,7 @@ import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
+import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -50,6 +52,7 @@ class DictionaryActivity : AppCompatActivity() {
     private lateinit var btnSpeakInput: ImageButton
     private lateinit var btnClearInput: ImageButton
     private lateinit var tvPronunciation: TextView
+    private lateinit var progressTranslation: ProgressBar
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -95,8 +98,12 @@ class DictionaryActivity : AppCompatActivity() {
         })
     }
 
-    private fun toolbar(){
+    private fun toolbar() {
         setContentView(R.layout.activity_dictionary)
+        // Match status bar to gradient header colour; make icons white
+        window.statusBarColor = Color.parseColor("#4361EE")
+        WindowCompat.getInsetsController(window, window.decorView)
+            .isAppearanceLightStatusBars = false
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
@@ -129,11 +136,12 @@ class DictionaryActivity : AppCompatActivity() {
                             )
                         }
 
-                        // Antonyms
+                        def.synonyms?.takeIf { it.isNotEmpty() }?.let {
+                            items.add(WordDetailItem("Synonyms", it.joinToString(", ")))
+                        }
+
                         def.antonyms?.takeIf { it.isNotEmpty() }?.let {
-                            items.add(
-                                WordDetailItem("Antonyms", it.joinToString(", "))
-                            )
+                            items.add(WordDetailItem("Antonyms", it.joinToString(", ")))
                         }
                     }
                 }
@@ -171,6 +179,7 @@ class DictionaryActivity : AppCompatActivity() {
         btnSpeakInput = findViewById(R.id.btnSpeakInput)
         btnClearInput = findViewById(R.id.btnClearInput)
         tvPronunciation = findViewById(R.id.tvPronunciation)
+        progressTranslation = findViewById(R.id.progressTranslation)
         rvWordDetails.layoutManager = LinearLayoutManager(this)
         val ivInfoLogo: ImageView = findViewById(R.id.ivInfoLogo)
 
@@ -296,20 +305,7 @@ class DictionaryActivity : AppCompatActivity() {
                     view: View?,
                     position: Int,
                     id: Long
-                ) {
-                    val selectedLanguage =
-                        parent.getItemAtPosition(position) as String
-
-//                    val targetLangCode = LanguageConstants.indianLanguages[selectedLanguage] ?: return
-                    // Pre-download model when language is selected
-//                    translatorHelper.translate(
-//                        text = "Hello",
-//                        targetLanguage = targetLangCode,
-//                        onDownloading = {},
-//                        onSuccess = {},
-//                        onError = {}
-//                    )
-                }
+                ) {}
 
                 override fun onNothingSelected(parent: AdapterView<*>) {}
             }
@@ -321,28 +317,35 @@ class DictionaryActivity : AppCompatActivity() {
 
             val word = etInput.text.toString().trim()
             if (word.isEmpty()) {
-                tvResult.text = getString(R.string.please_enter_word)
+                Toast.makeText(this, getString(R.string.please_enter_word), Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
-            // Dictionary call (English meaning)
+            // Dictionary lookup
             progressWordDetails.visibility = View.VISIBLE
             rvWordDetails.visibility = View.INVISIBLE
             dictionaryViewModel.getWordDetails(word)
 
-            // Translate entered word
+            // Show translation in-flight state
+            progressTranslation.visibility = View.VISIBLE
+            btnTranslate.isEnabled = false
+
             val selectedLanguage = spinnerLanguage.selectedItem as String
             val targetLanguage =
                 LanguageConstants.indianLanguages[selectedLanguage]
-                    ?: return@setOnClickListener
+                    ?: run {
+                        progressTranslation.visibility = View.GONE
+                        btnTranslate.isEnabled = true
+                        return@setOnClickListener
+                    }
 
             translatorHelper.translate(
                 text = word,
                 targetLanguage = targetLanguage,
-                onDownloading = {
-                    tvResult.text = getString(R.string.translating)
-                },
+                onDownloading = {},
                 onSuccess = { translatedText ->
+                    progressTranslation.visibility = View.GONE
+                    btnTranslate.isEnabled = true
                     tvResult.text = translatedText
                     val pronunciation = romanize(translatedText)
                     if (pronunciation.isNotBlank() && pronunciation != translatedText) {
@@ -353,7 +356,9 @@ class DictionaryActivity : AppCompatActivity() {
                     }
                 },
                 onError = {
-                    tvResult.text = getString(R.string.failed_translating)
+                    progressTranslation.visibility = View.GONE
+                    btnTranslate.isEnabled = true
+                    Toast.makeText(this, getString(R.string.failed_translating), Toast.LENGTH_SHORT).show()
                 }
             )
         }
