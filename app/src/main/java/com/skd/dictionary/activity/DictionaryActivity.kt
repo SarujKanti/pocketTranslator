@@ -39,6 +39,7 @@ class DictionaryActivity : AppCompatActivity() {
     private lateinit var btnTranslate: Button
     private lateinit var spinnerLanguage: Spinner
     private lateinit var tts: TextToSpeech
+    private var isTtsReady = false
     private lateinit var btnSpeak: ImageButton
     private lateinit var btnClear: ImageButton
     private lateinit var progressWordDetails: ProgressBar
@@ -60,15 +61,16 @@ class DictionaryActivity : AppCompatActivity() {
         setupTranslateAction()
         preloadLanguages()
 
-        val englishOnlyFilter = InputFilter { source, start, end, dest, dstart, dend ->
-            val allowedPattern = Regex("^[a-zA-Z ]*$")
+        val englishOnlyFilter = InputFilter { source, start, end, _, _, _ ->
+            val filtered = StringBuilder()
             for (i in start until end) {
-                val char = source[i].toString()
-                if (!char.matches(allowedPattern)) {
-                    return@InputFilter ""
+                val c = source[i]
+                if (c in 'a'..'z' || c in 'A'..'Z' || c == ' ') {
+                    filtered.append(c)
                 }
             }
-            null
+            // Return null (accept unchanged) if all chars are valid; otherwise return filtered string
+            if (filtered.length == end - start) null else filtered
         }
 
         etInput.filters = arrayOf(englishOnlyFilter)
@@ -188,7 +190,6 @@ class DictionaryActivity : AppCompatActivity() {
 
 
         btnSpeakInput.setOnClickListener {
-
             val textToSpeak = etInput.text.toString().trim()
 
             if (textToSpeak.isEmpty()) {
@@ -196,38 +197,27 @@ class DictionaryActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
-            val selectedLanguage =
-                spinnerLanguage.selectedItem as? String ?: return@setOnClickListener
-
-            val locale = getLocaleForLanguage(selectedLanguage)
-
-            val result = tts.setLanguage(locale)
-
-            if (result == TextToSpeech.LANG_MISSING_DATA ||
-                result == TextToSpeech.LANG_NOT_SUPPORTED
-            ) {
-                Toast.makeText(
-                    this,
-                    "Voice not supported for $selectedLanguage",
-                    Toast.LENGTH_SHORT
-                ).show()
-            } else {
-                tts.speak(
-                    textToSpeak,
-                    TextToSpeech.QUEUE_FLUSH,
-                    null,
-                    "INPUT_SPEAK"
-                )
+            if (!isTtsReady) {
+                Toast.makeText(this, "Speech engine is not ready yet", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
             }
+
+            // Input is always English — use English locale
+            tts.setLanguage(Locale.US)
+            tts.speak(textToSpeak, TextToSpeech.QUEUE_FLUSH, null, "INPUT_SPEAK")
         }
 
 
         btnSpeak.setOnClickListener {
-
             val textToSpeak = tvResult.text.toString().trim()
 
             if (textToSpeak.isEmpty()) {
-                tvResult.text = getString(R.string.nothing_to_pronounce)
+                Toast.makeText(this, getString(R.string.nothing_to_pronounce), Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            if (!isTtsReady) {
+                Toast.makeText(this, "Speech engine is not ready yet", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
@@ -235,19 +225,12 @@ class DictionaryActivity : AppCompatActivity() {
                 spinnerLanguage.selectedItem as? String ?: return@setOnClickListener
 
             val locale = getLocaleForLanguage(selectedLanguage)
-
             val result = tts.setLanguage(locale)
 
-            if (result == TextToSpeech.LANG_MISSING_DATA ||
-                result == TextToSpeech.LANG_NOT_SUPPORTED) {
-                tvResult.text = "Voice not supported for $selectedLanguage"
+            if (result == TextToSpeech.LANG_MISSING_DATA || result == TextToSpeech.LANG_NOT_SUPPORTED) {
+                Toast.makeText(this, "Voice not supported for $selectedLanguage", Toast.LENGTH_SHORT).show()
             } else {
-                tts.speak(
-                    textToSpeak,
-                    TextToSpeech.QUEUE_FLUSH,
-                    null,
-                    null
-                )
+                tts.speak(textToSpeak, TextToSpeech.QUEUE_FLUSH, null, null)
             }
         }
 
@@ -278,6 +261,7 @@ class DictionaryActivity : AppCompatActivity() {
         tts = TextToSpeech(this) { status ->
             if (status == TextToSpeech.SUCCESS) {
                 tts.language = Locale.US // default (English)
+                isTtsReady = true
             }
         }
     }
