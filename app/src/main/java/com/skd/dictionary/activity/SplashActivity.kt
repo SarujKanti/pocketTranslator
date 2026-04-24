@@ -28,6 +28,7 @@ class SplashActivity : AppCompatActivity() {
             isAppearanceLightStatusBars = false
             isAppearanceLightNavigationBars = false
         }
+
         setContentView(R.layout.activity_splash)
 
         // Prevent the footer from being hidden behind the navigation bar on
