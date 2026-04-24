@@ -30,8 +30,7 @@ class SplashActivity : AppCompatActivity() {
         }
 
         setContentView(R.layout.activity_splash)
-
-
+        
         // Prevent the footer from being hidden behind the navigation bar on
         // devices with a gesture bar or on-screen buttons.
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.splashRoot)) { view, insets ->
