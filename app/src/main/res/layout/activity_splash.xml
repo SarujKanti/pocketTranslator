@@ -7,6 +7,7 @@
     android:layout_height="match_parent"
     android:background="@drawable/bg_gradient_splash">
 
+
     <!-- Center group: logo card + app name + tagline -->
     <LinearLayout
         android:id="@+id/centerGroup"
