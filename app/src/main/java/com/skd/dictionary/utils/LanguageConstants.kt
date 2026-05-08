@@ -14,4 +14,15 @@ object LanguageConstants {
         "Gujarati" to TranslateLanguage.GUJARATI,
         "Urdu" to TranslateLanguage.URDU
     )
+
+     val globalLanguages = mapOf(
+        "English" to TranslateLanguage.ENGLISH,
+        "Spanish" to TranslateLanguage.SPANISH,
+        "French" to TranslateLanguage.FRENCH,
+        "German" to TranslateLanguage.GERMAN,
+        "Chinese" to TranslateLanguage.CHINESE,
+        "Japanese" to TranslateLanguage.JAPANESE,
+        "Russian" to TranslateLanguage.RUSSIAN,
+        "Portuguese" to TranslateLanguage.PORTUGUESE
+    )
 }
