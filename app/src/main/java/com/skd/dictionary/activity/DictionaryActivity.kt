@@ -51,7 +51,7 @@ class DictionaryActivity : AppCompatActivity() {
     private lateinit var btnSpeakInput: ImageButton
     private lateinit var btnClearInput: ImageButton
     private lateinit var tvPronunciation: TextView
-    
+
     private lateinit var progressTranslation: ProgressBar
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -65,6 +65,8 @@ class DictionaryActivity : AppCompatActivity() {
         setupLanguageSpinner()
         setupTranslateAction()
         preloadLanguages()
+
+        
 
         val englishOnlyFilter = InputFilter { source, start, end, _, _, _ ->
             val filtered = StringBuilder()
