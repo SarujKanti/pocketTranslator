@@ -51,6 +51,7 @@ class DictionaryActivity : AppCompatActivity() {
     private lateinit var btnSpeakInput: ImageButton
     private lateinit var btnClearInput: ImageButton
     private lateinit var tvPronunciation: TextView
+    
     private lateinit var progressTranslation: ProgressBar
 
     override fun onCreate(savedInstanceState: Bundle?) {
