@@ -66,7 +66,7 @@ class DictionaryActivity : AppCompatActivity() {
         setupTranslateAction()
         preloadLanguages()
 
-        
+
 
         val englishOnlyFilter = InputFilter { source, start, end, _, _, _ ->
             val filtered = StringBuilder()
