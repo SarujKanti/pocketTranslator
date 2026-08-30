@@ -33,6 +33,8 @@ import com.skd.dictionary.constant.StringConstant
 import com.skd.dictionary.dataModel.WordDetailItem
 import com.skd.dictionary.utils.LanguageConstants
 import com.skd.dictionary.utils.TranslatorHelper
+
+
 import com.skd.dictionary.viewModel.DictionaryViewModel
 import java.util.Locale
 
