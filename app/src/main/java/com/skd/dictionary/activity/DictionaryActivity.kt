@@ -22,7 +22,6 @@ import androidx.core.view.ViewCompat
 
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
-
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
