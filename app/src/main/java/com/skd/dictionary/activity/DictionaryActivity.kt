@@ -51,7 +51,6 @@ class DictionaryActivity : AppCompatActivity() {
     private lateinit var rvWordDetails: RecyclerView
     private lateinit var wordDetailAdapter: WordDetailAdapter
     private lateinit var btnSpeakInput: ImageButton
-    
     private lateinit var btnClearInput: ImageButton
     private lateinit var tvPronunciation: TextView
 
