@@ -200,7 +200,6 @@ class DictionaryActivity : AppCompatActivity() {
         tvPronunciation = findViewById(R.id.tvPronunciation)
         progressTranslation = findViewById(R.id.progressTranslation)
         rvWordDetails.layoutManager = LinearLayoutManager(this)
-
         
         val ivInfoLogo: ImageView = findViewById(R.id.ivInfoLogo)
 
