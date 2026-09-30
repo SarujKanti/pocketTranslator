@@ -202,7 +202,7 @@ class DictionaryActivity : AppCompatActivity() {
         rvWordDetails.layoutManager = LinearLayoutManager(this)
 
 
-        
+
         val ivInfoLogo: ImageView = findViewById(R.id.ivInfoLogo)
 
         wordDetailAdapter = WordDetailAdapter(mutableListOf())
@@ -236,6 +236,8 @@ class DictionaryActivity : AppCompatActivity() {
                 Toast.makeText(this, getString(R.string.nothing_to_speak), Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
+
+            
 
             if (!isTtsReady) {
                 Toast.makeText(this, "Speech engine is not ready yet", Toast.LENGTH_SHORT).show()
