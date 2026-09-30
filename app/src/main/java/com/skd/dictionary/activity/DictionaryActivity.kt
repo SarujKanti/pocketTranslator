@@ -237,7 +237,7 @@ class DictionaryActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
-            
+
 
             if (!isTtsReady) {
                 Toast.makeText(this, "Speech engine is not ready yet", Toast.LENGTH_SHORT).show()
@@ -273,6 +273,8 @@ class DictionaryActivity : AppCompatActivity() {
             if (result == TextToSpeech.LANG_MISSING_DATA || result == TextToSpeech.LANG_NOT_SUPPORTED) {
                 Toast.makeText(this, "Voice not supported for $selectedLanguage", Toast.LENGTH_SHORT).show()
             } else {
+
+                
                 tts.speak(textToSpeak, TextToSpeech.QUEUE_FLUSH, null, null)
             }
         }
