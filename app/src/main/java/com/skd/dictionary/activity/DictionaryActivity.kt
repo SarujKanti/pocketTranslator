@@ -276,8 +276,6 @@ class DictionaryActivity : AppCompatActivity() {
                 tts.speak(textToSpeak, TextToSpeech.QUEUE_FLUSH, null, null)
             }
         }
-
-
     }
 
     private fun showAppInfoDialog() {
