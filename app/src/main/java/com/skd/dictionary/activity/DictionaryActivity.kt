@@ -278,6 +278,7 @@ class DictionaryActivity : AppCompatActivity() {
         }
     }
 
+    
     private fun showAppInfoDialog() {
         val dialog = android.app.Dialog(this)
         dialog.setContentView(R.layout.dialog_app_info)
