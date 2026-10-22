@@ -267,6 +267,8 @@ class DictionaryActivity : AppCompatActivity() {
                 (spinnerLanguage.selectedItem as? LanguageSpinnerAdapter.LanguageItem)?.name
                     ?: return@setOnClickListener
 
+
+            
             val locale = getLocaleForLanguage(selectedLanguage)
             val result = tts.setLanguage(locale)
 
