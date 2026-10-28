@@ -413,6 +413,7 @@ class DictionaryActivity : AppCompatActivity() {
         }
     }
 
+
     override fun onDestroy() {
         super.onDestroy()
         if (::tts.isInitialized) {
